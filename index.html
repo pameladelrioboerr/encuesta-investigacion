@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encuesta sobre Lactancia Materna Exclusiva</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #eef2f7;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #1f2a44;
+    padding: 1.2rem;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    overflow: hidden;
+  }
+  .header {
+    background: #2b5e3b;
+    color: #fff;
+    padding: 1.5rem 2rem;
+  }
+  .header h1 { margin: 0; font-size: 1.7rem; }
+  .form-panel { padding: 2rem; }
+  .intro {
+    margin: 0 0 1.5rem;
+    color: #2b5e3b;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e7ef;
+  }
+  .section h2 {
+    margin: 0 0 1rem;
+    color: #1e4620;
+    font-size: 1.25rem;
+  }
+  .question { margin-bottom: 1.45rem; }
+  .question-title {
+    display: block;
+    margin-bottom: .55rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .subquestion {
+    margin: .8rem 0 0 1rem;
+    padding: .85rem 1rem;
+    background: #f7faf8;
+    border-left: 4px solid #2b6e3c;
+    border-radius: .75rem;
+  }
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .7rem;
+  }
+  .option {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .45rem .85rem;
+    background: #f8fafc;
+    border: 1px solid #dfe6ef;
+    border-radius: 999px;
+  }
+  input[type="radio"] {
+    width: 19px;
+    height: 19px;
+    accent-color: #2b6e3c;
+  }
+  select {
+    width: min(100%, 360px);
+    padding: .65rem .9rem;
+    border: 1.5px solid #dfe6ef;
+    border-radius: 999px;
+    background: #fff;
+    font-size: .95rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.5rem;
+  }
+  button {
+    border: 0;
+    border-radius: 999px;
+    padding: .7rem 1.1rem;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .primary { background: #2b6e3c; color: #fff; }
+  .secondary { background: #eef2f7; color: #1f2a44; }
+  .danger { background: #fee2e2; color: #b91c1c; }
+  .status {
+    margin-top: 1rem;
+    padding: .8rem 1rem;
+    border-left: 5px solid #2b6e3c;
+    border-radius: .75rem;
+    background: #f1f5f9;
+    min-height: 2.5rem;
+  }
+  [hidden] { display: none !important; }
+  footer {
+    padding: 1rem;
+    text-align: center;
+    font-size: .75rem;
+    color: #64748b;
+    background: #f9fcff;
+  }
+  @media (max-width: 640px) {
+    body { padding: .6rem; }
+    .form-panel { padding: 1.2rem; }
+    .header { padding: 1.2rem; }
+    .subquestion { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1>Encuesta sobre Lactancia Materna Exclusiva</h1>
+  </header>
+
+  <main class="form-panel">
+    <p class="intro">
+      Las siguientes preguntas se refieren a su experiencia durante el embarazo, parto, puerperio y lactancia de su último hijo/a.
+      La información será confidencial y utilizada únicamente con fines de investigación.
+    </p>
+
+    <form id="cuestionarioForm">
+      <section class="section">
+        <h2>I. Caracterización sociodemográfica</h2>
+
+        <div class="question">
+          <label class="question-title" for="edad_madre">1. ¿Cuál es su edad?</label>
+          <select id="edad_madre" name="edad_madre">
+            <option value="">-- Seleccione un rango --</option>
+            <option value="18 a 20 años">18 a 20 años</option>
+            <option value="21 a 25 años">21 a 25 años</option>
+            <option value="26 a 30 años">26 a 30 años</option>
+          </select>
+        </div>
+
+        <div class="question">
+          <label class="question-title" for="nivel_educativo">2. ¿Cuál es el máximo nivel educativo que ha alcanzado?</label>
+          <select id="nivel_educativo" name="nivel_educativo">
+            <option value="">-- Seleccione una opción --</option>
+            <option value="Primaria incompleta">Primaria incompleta (1)</option>
+            <option value="Primaria completa">Primaria completa (2)</option>
+            <option value="Secundaria incompleta">Secundaria incompleta (3)</option>
+            <option value="Secundaria completa">Secundaria completa (4)</option>
+            <option value="Terciaria o universitaria incompleta">Terciaria o universitaria incompleta (5)</option>
+            <option value="Terciaria o universitaria completa">Terciaria o universitaria completa (6)</option>
+            <option value="Posgrado">Posgrado (7)</option>
+          </select>
+        </div>
+
+        <div class="question">
+          <span class="question-title">3. ¿Dónde reside actualmente?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="zona_residencia" value="Zona urbana"> Zona urbana</label>
+            <label class="option"><input type="radio" name="zona_residencia" value="Zona suburbana"> Zona suburbana</label>
+            <label class="option"><input type="radio" name="zona_residencia" value="Zona rural"> Zona rural</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>II. Factores materno-fisiológicos</h2>
+
+        <div class="question">
+          <span class="question-title">4. ¿Algún profesional de la salud le diagnosticó o confirmó baja producción de leche durante la lactancia?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="hipogalactia" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="hipogalactia" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="hipogalactia:Sí" hidden>
+            <span class="question-title">¿Considera que esta situación dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="hipogalactia_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="hipogalactia_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">5. ¿Algún profesional de la salud le diagnosticó mastitis durante el período de lactancia?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="mastitis" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="mastitis" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="mastitis:Sí" hidden>
+            <span class="question-title">¿Considera que la mastitis dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="mastitis_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="mastitis_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">6. ¿Presentó pezón invertido o umbilicado durante el período de lactancia?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="pezon_invertido" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="pezon_invertido" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="pezon_invertido:Sí" hidden>
+            <span class="question-title">¿Considera que esta condición dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="pezon_invertido_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="pezon_invertido_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">7. ¿Presentó grietas, fisuras, heridas o sangrado en el pezón durante la lactancia?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="grietas_fisuras" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="grietas_fisuras" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="grietas_fisuras:Sí" hidden>
+            <span class="question-title">¿Considera que estas lesiones dificultaron mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="grietas_fisuras_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="grietas_fisuras_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">8. ¿Presentó mamas endurecidas, muy llenas o dolorosas por acumulación de leche durante la lactancia?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="ingurgitacion" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="ingurgitacion" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="ingurgitacion:Sí" hidden>
+            <span class="question-title">¿Considera que esta situación dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="ingurgitacion_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="ingurgitacion_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">9. ¿Algún profesional de la salud le diagnosticó depresión posparto después del nacimiento de su hijo/a?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="depresion_posparto" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="depresion_posparto" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="depresion_posparto:Sí" hidden>
+            <span class="question-title">¿Considera que esta situación dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="depresion_posparto_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="depresion_posparto_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>III. Factores familiares</h2>
+
+        <div class="question">
+          <span class="question-title">10. ¿Recibió apoyo económico de alguna persona o familiar para cubrir sus gastos o los del hogar?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="apoyo_economico" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="apoyo_economico" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="apoyo_economico:No" hidden>
+            <span class="question-title">Si respondió no, ¿considera que la falta de apoyo económico dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="falta_apoyo_economico_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="falta_apoyo_economico_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">11. Durante el período de lactancia, ¿contó con apoyo de su pareja o persona significativa?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="apoyo_pareja" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="apoyo_pareja" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="apoyo_pareja:No" hidden>
+            <span class="question-title">Si respondió no, ¿considera que esa falta de apoyo dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="falta_apoyo_pareja_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="falta_apoyo_pareja_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">12. Durante la lactancia, ¿contó con familiares, amistades u otras personas a quienes recurrir cuando necesitaba ayuda?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="red_apoyo" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="red_apoyo" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="red_apoyo:No" hidden>
+            <span class="question-title">Si respondió no, ¿considera que la falta de una red de apoyo influyó en su posibilidad de mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="falta_red_apoyo_influyo_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="falta_red_apoyo_influyo_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">13. ¿Considera que el apoyo emocional recibido influyó en su posibilidad de mantener la lactancia materna exclusiva?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="apoyo_emocional_influyo_lme" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="apoyo_emocional_influyo_lme" value="No"> No</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">14. Durante el embarazo, puerperio o período de lactancia, ¿vivió alguna situación de violencia física o psicológica en el ámbito familiar o de pareja?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="violencia" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="violencia" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="violencia:Sí" hidden>
+            <span class="question-title">¿Considera que esta situación dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="violencia_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="violencia_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>IV. Factores laborales y apoyo social</h2>
+
+        <div class="question">
+          <span class="question-title">15. Después del nacimiento, ¿se reincorporó a una actividad laboral?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="reincorporacion_laboral" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="reincorporacion_laboral" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="reincorporacion_laboral:Sí" hidden>
+            <span class="question-title">¿Considera que la reincorporación al trabajo influyó en el abandono de la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="reincorporacion_influyo_abandono_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="reincorporacion_influyo_abandono_lme" value="No"> No</label>
+              <label class="option"><input type="radio" name="reincorporacion_influyo_abandono_lme" value="No corresponde"> No corresponde</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">16. ¿Tuvo acceso a licencia maternal después del nacimiento de su hijo/a?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="licencia_maternal" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="licencia_maternal" value="No"> No</label>
+            <label class="option"><input type="radio" name="licencia_maternal" value="No aplica"> No aplica</label>
+          </div>
+        </div>
+
+        <div class="question" data-show-if="licencia_maternal:Sí" hidden>
+          <span class="question-title">17. ¿Considera que la duración de la licencia maternal fue suficiente para favorecer el mantenimiento de la lactancia materna exclusiva?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="licencia_suficiente" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="licencia_suficiente" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="licencia_suficiente:No" hidden>
+            <span class="question-title">Si considera que no fue suficiente, ¿cree que esto dificultó mantener la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="licencia_insuficiente_dificulto_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="licencia_insuficiente_dificulto_lme" value="No"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">18. ¿Considera que la cantidad de horas de trabajo contribuyó al abandono de la lactancia materna exclusiva?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="horas_trabajo_contribuyo_abandono_lme" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="horas_trabajo_contribuyo_abandono_lme" value="No"> No</label>
+            <label class="option"><input type="radio" name="horas_trabajo_contribuyo_abandono_lme" value="No aplica"> No aplica</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">19. ¿Considera que la distancia o el tiempo de traslado dificultó mantener la lactancia materna exclusiva?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="traslado_dificulto_lme" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="traslado_dificulto_lme" value="No"> No</label>
+            <label class="option"><input type="radio" name="traslado_dificulto_lme" value="No aplica"> No aplica</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">20. En su lugar de trabajo, ¿disponía de tiempo y espacio adecuado para amamantar o extraerse leche?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="espacio_lactancia_trabajo" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="espacio_lactancia_trabajo" value="No"> No</label>
+            <label class="option"><input type="radio" name="espacio_lactancia_trabajo" value="No aplica"> No aplica</label>
+          </div>
+          <div class="subquestion" data-show-if="espacio_lactancia_trabajo:No" hidden>
+            <span class="question-title">Si respondió no, ¿considera que la falta de estas condiciones contribuyó al abandono de la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="falta_espacio_contribuyo_abandono_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="falta_espacio_contribuyo_abandono_lme" value="No"> No</label>
+              <label class="option"><input type="radio" name="falta_espacio_contribuyo_abandono_lme" value="No corresponde"> No corresponde</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="question-title">21. ¿Durante el período de lactancia recibió algún beneficio social o ayuda estatal?</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="beneficio_social" value="Sí"> Sí</label>
+            <label class="option"><input type="radio" name="beneficio_social" value="No"> No</label>
+          </div>
+          <div class="subquestion" data-show-if="beneficio_social:No" hidden>
+            <span class="question-title">Si respondió no, ¿considera que la falta de este apoyo influyó en el abandono de la lactancia materna exclusiva?</span>
+            <div class="options">
+              <label class="option"><input type="radio" name="falta_beneficio_influyo_abandono_lme" value="Sí"> Sí</label>
+              <label class="option"><input type="radio" name="falta_beneficio_influyo_abandono_lme" value="No"> No</label>
+              <label class="option"><input type="radio" name="falta_beneficio_influyo_abandono_lme" value="No corresponde"> No corresponde</label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
+
+    <div class="actions">
+      <button class="primary" type="button" id="guardarBtn">Guardar local</button>
+      <button class="secondary" type="button" id="exportarBtn">Exportar datos (JSON)</button>
+      <button class="danger" type="button" id="resetBtn">Borrar todo</button>
+    </div>
+    <div class="status" id="statusMsg" aria-live="polite"></div>
+  </main>
+
+  <footer>Los datos se almacenan localmente en el navegador del dispositivo.</footer>
+</div>
+
+<script>
+(() => {
+  const form = document.getElementById('cuestionarioForm');
+  const status = document.getElementById('statusMsg');
+  const STORAGE_KEY = 'cuestionario_lme_v2';
+
+  function valueOf(name) {
+    const checked = form.querySelector(`[name="${name}"]:checked`);
+    if (checked) return checked.value;
+    const field = form.querySelector(`[name="${name}"]`);
+    if (!field || field.type === 'radio' || field.type === 'checkbox') return '';
+    return field.value || '';
+  }
+
+  function updateConditionals() {
+    form.querySelectorAll('[data-show-if]').forEach(block => {
+      const [name, expected] = block.dataset.showIf.split(':');
+      const show = valueOf(name) === expected;
+      block.hidden = !show;
+      block.querySelectorAll('input, select').forEach(field => {
+        field.disabled = !show;
+        if (!show) {
+          if (field.type === 'radio' || field.type === 'checkbox') field.checked = false;
+          else field.value = '';
+        }
+      });
+    });
+  }
+
+  function collectData() {
+    const data = {};
+    new FormData(form).forEach((value, key) => { data[key] = value; });
+    return data;
+  }
+
+  function fillData(data = {}) {
+    form.reset();
+    Object.entries(data).forEach(([name, value]) => {
+      const fields = form.querySelectorAll(`[name="${name}"]`);
+      fields.forEach(field => {
+        if (field.type === 'radio' || field.type === 'checkbox') field.checked = field.value === value;
+        else field.value = value;
+      });
+    });
+    updateConditionals();
+  }
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(collectData()));
+    status.textContent = `Respuestas guardadas localmente · ${new Date().toLocaleString()}`;
+  }
+
+  function exportJSON() {
+    const blob = new Blob([JSON.stringify(collectData(), null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Cuestionario_LME_${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  form.addEventListener('change', () => { updateConditionals(); save(); });
+  document.getElementById('guardarBtn').addEventListener('click', save);
+  document.getElementById('exportarBtn').addEventListener('click', exportJSON);
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('¿Está seguro de borrar todas las respuestas?')) return;
+    form.reset();
+    localStorage.removeItem(STORAGE_KEY);
+    updateConditionals();
+    status.textContent = 'Formulario restablecido.';
+  });
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    fillData(saved);
+    if (Object.keys(saved).length) status.textContent = 'Se restauraron las respuestas guardadas anteriormente.';
+  } catch {
+    updateConditionals();
+  }
+})();
+</script>
+</body>
+</html>
