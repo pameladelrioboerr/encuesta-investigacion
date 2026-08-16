@@ -4,7 +4,7 @@
   const contador = document.getElementById('contadorRegistros');
   const guardar = document.getElementById('guardarRegistroBtn');
   const nueva = document.getElementById('nuevaEncuestaBtn');
-  const exportar = document.getElementById('exportarCsvBtn');
+  const exportar = document.getElementById('exportarJsonBtn');
   const ver = document.getElementById('verRegistrosBtn');
   const modal = document.getElementById('registrosModal');
   const lista = document.getElementById('listaRegistros');
@@ -99,31 +99,22 @@
     estado.textContent = navigator.onLine ? '🟢 Nueva encuesta lista' : '📴 Nueva encuesta lista sin conexión';
   }
 
-  function csvEscape(value) {
-    const str = Array.isArray(value) ? value.join(' | ') : String(value ?? '');
-    return `"${str.replace(/"/g, '""')}"`;
-  }
-
-  async function exportCSV() {
+  async function exportJSON() {
     const records = await getAllRecords();
     if (!records.length) {
       alert('Todavía no hay encuestas guardadas.');
       return;
     }
-    const keys = new Set();
-    records.forEach(r => Object.keys(r.datos || {}).forEach(k => keys.add(k)));
-    const headers = ['encuesta_id', 'fecha_guardado', ...keys];
-    const rows = [headers.map(csvEscape).join(',')];
-    records.forEach(r => {
-      const row = [String(r.id).padStart(3, '0'), r.fecha_guardado, ...[...keys].map(k => r.datos?.[k] ?? '')];
-      rows.push(row.map(csvEscape).join(','));
-    });
-    const bom = '\uFEFF';
-    const blob = new Blob([bom + rows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const exportData = records.map(r => ({
+      encuesta_id: String(r.id).padStart(3, '0'),
+      fecha_guardado: r.fecha_guardado,
+      ...r.datos
+    }));
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Encuestas_LME_${new Date().toISOString().slice(0,10)}.csv`;
+    a.download = `Encuestas_LME_${new Date().toISOString().slice(0,10)}.json`;
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -165,9 +156,9 @@
     clearCurrentForm();
   });
 
-  exportar.addEventListener('click', () => exportCSV().catch(err => {
+  exportar.addEventListener('click', () => exportJSON().catch(err => {
     console.error(err);
-    alert('No se pudo exportar el archivo CSV.');
+    alert('No se pudo exportar el archivo JSON.');
   }));
   ver.addEventListener('click', () => showRecords().catch(console.error));
   cerrarModal.addEventListener('click', () => { modal.hidden = true; });
