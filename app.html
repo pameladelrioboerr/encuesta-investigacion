@@ -10,36 +10,46 @@
   <title>Encuesta LME</title>
   <link rel="manifest" href="./manifest.json">
   <style>
-    html,body{margin:0;width:100%;height:100%;background:#eef2f7;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-    #estado{position:fixed;z-index:10;right:10px;bottom:10px;background:#fff;border:1px solid #dfe6ef;border-radius:999px;padding:.45rem .75rem;font-size:.8rem;box-shadow:0 3px 12px rgba(0,0,0,.12)}
-    iframe{display:block;width:100%;height:100%;border:0;background:#eef2f7}
+    html,body{margin:0;width:100%;height:100%;background:#eef2f7;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1f2a44}
+    body{display:flex;flex-direction:column}
+    .barra{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;padding:.7rem;background:#fff;border-bottom:1px solid #dfe6ef;position:sticky;top:0;z-index:20}
+    .barra button{border:0;border-radius:999px;padding:.62rem .9rem;font-weight:650;cursor:pointer}
+    .primary{background:#2b6e3c;color:#fff}.secondary{background:#eef2f7;color:#1f2a44}.outline{background:#fff;border:1px solid #cad4df!important;color:#1f2a44}
+    #contadorRegistros{font-size:.83rem;margin-left:auto;color:#475569}
+    #estado{font-size:.82rem;padding:.5rem .75rem;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+    iframe{display:block;width:100%;flex:1;border:0;background:#eef2f7;min-height:0}
+    .modal{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:50;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .modal[hidden]{display:none!important}
+    .modal-card{width:min(92vw,560px);max-height:80vh;overflow:auto;background:#fff;border-radius:1rem;padding:1rem;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:1rem}.modal-head h2{margin:.2rem 0 1rem;font-size:1.15rem}.modal-head button{border:0;background:#eef2f7;border-radius:999px;padding:.45rem .75rem}
+    .registro-item{padding:.8rem 0;border-bottom:1px solid #e2e8f0}.registro-item span{font-size:.85rem;color:#64748b}
+    @media(max-width:640px){.barra{padding:.55rem}.barra button{font-size:.8rem;padding:.55rem .75rem}#contadorRegistros{width:100%;margin-left:0}}
   </style>
 </head>
 <body>
-  <iframe src="./index.html" title="Encuesta sobre Lactancia Materna Exclusiva"></iframe>
+  <div class="barra">
+    <button class="primary" id="guardarRegistroBtn" type="button">Guardar encuesta</button>
+    <button class="secondary" id="nuevaEncuestaBtn" type="button">Nueva encuesta</button>
+    <button class="outline" id="verRegistrosBtn" type="button">Ver guardadas</button>
+    <button class="outline" id="exportarCsvBtn" type="button">Exportar CSV</button>
+    <span id="contadorRegistros">0 encuestas guardadas</span>
+  </div>
   <div id="estado" aria-live="polite">Preparando modo offline…</div>
+  <iframe id="encuestaFrame" src="./index.html" title="Encuesta sobre Lactancia Materna Exclusiva"></iframe>
+
+  <div class="modal" id="registrosModal" hidden>
+    <div class="modal-card">
+      <div class="modal-head"><h2>Encuestas guardadas en este dispositivo</h2><button id="cerrarModalBtn" type="button">Cerrar</button></div>
+      <div id="listaRegistros"></div>
+    </div>
+  </div>
+
   <script>
     const estado = document.getElementById('estado');
-
-    function actualizarEstado(){
-      estado.textContent = navigator.onLine ? '🟢 Lista para usar' : '📴 Modo offline';
-    }
-
-    window.addEventListener('online', actualizarEstado);
-    window.addEventListener('offline', actualizarEstado);
-    actualizarEstado();
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', async () => {
-        try {
-          await navigator.serviceWorker.register('./service-worker.js', { scope: './' });
-          estado.textContent = navigator.onLine ? '🟢 Offline preparado' : '📴 Modo offline';
-        } catch (error) {
-          estado.textContent = '⚠️ No se pudo activar el modo offline';
-          console.error(error);
-        }
-      });
-    }
+    function actualizarEstado(){estado.textContent=navigator.onLine?'🟢 Lista para usar · datos locales':'📴 Modo offline · datos locales';}
+    window.addEventListener('online',actualizarEstado);window.addEventListener('offline',actualizarEstado);actualizarEstado();
+    if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{await navigator.serviceWorker.register('./service-worker.js',{scope:'./'});estado.textContent=navigator.onLine?'🟢 Offline preparado · datos locales':'📴 Modo offline · datos locales';}catch(error){estado.textContent='⚠️ No se pudo activar el modo offline';console.error(error);}})}
   </script>
+  <script src="./survey-manager.js"></script>
 </body>
 </html>
