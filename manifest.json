@@ -1,0 +1,11 @@
+{
+  "name": "Encuesta LME - Tesis",
+  "short_name": "Encuesta LME",
+  "description": "Encuesta de investigación sobre lactancia materna exclusiva",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef2f7",
+  "theme_color": "#2b5e3b",
+  "lang": "es-UY"
+}
